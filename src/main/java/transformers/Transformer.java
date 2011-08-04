@@ -1,45 +1,65 @@
 package transformers;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import transformers.impl.BigDecimalToDouble;
-import transformers.impl.DoubleToBigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Transformer {
-	private Map<String, CanTransform<?, ?>> transformers = new HashMap<String, CanTransform<?, ?>>();
+	private List<CanTransform> transformers_a = new ArrayList<CanTransform>();
+	private List<CanTransform> transformers_b = new ArrayList<CanTransform>();
 	
 	public static Transformer newInstance() {
 		Transformer transformer = new Transformer();
-		transformer.initialize();
 		return transformer;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public Object transform(Object from, Class<?> targetClass, Context context) {
-		if(from != null && targetClass != null) {
-			CanTransform transformer = transformers.get(from.getClass().getName() + "-" + targetClass.getName());
-			if(transformer != null) {
-				return transformer.transform(from, context);
+	public Transformer clear() {
+		transformers_a = new ArrayList<CanTransform>();
+		transformers_b = new ArrayList<CanTransform>();
+		return this;
+	}
+	
+	public Object transform(Object from, Class<?> to, Context context) {
+		if(context == null) context = Context.newInstance();
+		context.put(this);
+		Object returnObject = delegateTransformation(from, to, context);
+		context.removeTransformer();
+		return returnObject;
+	}
+	
+	public Object delegateTransformation(Object from, Class<?> to, Context context) {
+		for(CanTransform t: transformers_a) {
+			if(t.canTransform(from, to, context)) {
+				return t.transform(from, to, context);
+			}
+		}
+		for(CanTransform t: transformers_b) {
+			if(t.canTransform(from, to, context)) {
+				return t.transform(from, to, context);
 			}
 		}
 		return from;
 	}
 	
-	public Transformer and(CanTransform<?, ?> transformer) {
-		return with(transformer);
+	public Transformer and_b(CanTransform transformer) {
+		return with_b(transformer);
 	}
 	
-	public Transformer with(CanTransform<?, ?> transformer) {
-		if(transformers.containsKey(transformer.name())) 
-			transformers.remove(transformer.name());
-		transformers.put(transformer.name(), transformer);
+	public Transformer with_b(CanTransform transformer) {
+		if(transformer != null) {
+			transformers_b.add(transformer);
+		}
 		return this;
 	}
 	
-	private void initialize() {
-		transformers.put("java.math.BigDecimal-java.lang.Double", new BigDecimalToDouble());
-		transformers.put("java.lang.Double-java.math.BigDecimal", new DoubleToBigDecimal());
+	public Transformer and_a(CanTransform transformer) {
+		return with_a(transformer);
+	}
+	
+	public Transformer with_a(CanTransform transformer) {
+		if(transformer != null) {
+			transformers_a.add(transformer);
+		}
+		return this;
 	}
 	private Transformer() {}
 }

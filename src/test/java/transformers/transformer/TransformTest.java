@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import transformers.Transformer;
+import transformers.impl.BigDecimalToDouble;
 
 
 public class TransformTest {
@@ -21,7 +22,7 @@ public class TransformTest {
 	}
 	
 	@Test public void fromBigDecimalToDouble() {
-		Object actualObject = Transformer.newInstance().transform(new BigDecimal(3.14), Double.class, null);
+		Object actualObject = Transformer.newInstance().with_b(new BigDecimalToDouble()).transform(new BigDecimal(3.14), Double.class, null);
 		Double expectedObject = new Double(3.14);
 		Assert.assertEquals(expectedObject, actualObject);
 	}

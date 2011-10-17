@@ -3,6 +3,10 @@ package transformers;
 import java.util.ArrayList;
 import java.util.List;
 
+import transformers.impl.BigDecimalToDouble;
+import transformers.impl.DoubleToBigDecimal;
+import transformers.impl.StringToByteArrayTransformer;
+
 public class Transformer {
 	private List<CanTransform> transformers_a = new ArrayList<CanTransform>();
 	private List<CanTransform> transformers_b = new ArrayList<CanTransform>();
@@ -10,7 +14,14 @@ public class Transformer {
 
 	public static Transformer newInstance() {
 		Transformer transformer = new Transformer();
+		transformer.setup_built_in_transformers();
 		return transformer;
+	}
+	
+	private void setup_built_in_transformers() {
+		this.with_a(new StringToByteArrayTransformer())
+		.and_a(new DoubleToBigDecimal())
+		.and_a(new BigDecimalToDouble());
 	}
 
 	public Transformer clear() {

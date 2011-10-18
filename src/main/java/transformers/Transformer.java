@@ -5,7 +5,10 @@ import java.util.List;
 
 import transformers.impl.BigDecimalToDouble;
 import transformers.impl.DoubleToBigDecimal;
+import transformers.impl.IntegerToString;
+import transformers.impl.PrimitiveIntToString;
 import transformers.impl.StringToByteArrayTransformer;
+import transformers.impl.StringToInteger;
 
 public class Transformer {
 	private List<CanTransform> transformers_a = new ArrayList<CanTransform>();
@@ -18,10 +21,14 @@ public class Transformer {
 		return transformer;
 	}
 	
-	private void setup_built_in_transformers() {
+	public Transformer setup_built_in_transformers() {
 		this.with_a(new StringToByteArrayTransformer())
 		.and_a(new DoubleToBigDecimal())
-		.and_a(new BigDecimalToDouble());
+		.and_a(new BigDecimalToDouble())
+		.and_a(new StringToInteger())
+		.and_a(new IntegerToString())
+		.and_a(new PrimitiveIntToString());
+		return this;
 	}
 
 	public Transformer clear() {

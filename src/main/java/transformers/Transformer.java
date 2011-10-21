@@ -3,6 +3,9 @@ package transformers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import transformers.impl.BigDecimalToDouble;
 import transformers.impl.DoubleToBigDecimal;
 import transformers.impl.IntegerToString;
@@ -11,6 +14,7 @@ import transformers.impl.StringToByteArrayTransformer;
 import transformers.impl.StringToInteger;
 
 public class Transformer {
+	private static Log log = LogFactory.getLog(Transformer.class);
 	private List<CanTransform> transformers_a = new ArrayList<CanTransform>();
 	private List<CanTransform> transformers_b = new ArrayList<CanTransform>();
 	private List<CanTransform> built_in_transformers = new ArrayList<CanTransform>();
@@ -43,31 +47,57 @@ public class Transformer {
 		if (context == null)
 			context = Context.newInstance();
 		context.put(this);
+		log.info("Transforming " + from + " to " + to);
 		Object returnObject = delegateTransformation(from, to, context);
 		context.removeTransformer();
+		log.info("Transformation Complete. Return Value = " + returnObject);
 		return returnObject;
 	}
 
 	public Object delegateTransformation(Object from, Class<?> to, Context context) {
 		for (CanTransform t : transformers_a) {
 			if (t.canTransform(from, to, context)) {
-				return t.transform(from, to, context);
+				log("a", t, from, to, context);
+				Object returnValue = t.transform(from, to, context);
+				log.info("Converted to " + returnValue);
+				return returnValue;
 			}
 		}
 		for (CanTransform t : transformers_b) {
 			if (t.canTransform(from, to, context)) {
-				return t.transform(from, to, context);
+				log("b", t, from, to, context);
+				Object returnValue = t.transform(from, to, context);
+				log.info("Converted to " + returnValue);
+				return returnValue;
 			}
 		}
 		for (CanTransform t : built_in_transformers) {
 			if (t.canTransform(from, to, context)) {
-				return t.transform(from, to, context);
+				log("built_in", t, from, to, context);
+				Object returnValue = t.transform(from, to, context);
+				log.info("Converted to " + returnValue);
+				return returnValue;
 			}
 		}
 		if (default_transformer != null && default_transformer.canTransform(from, to, context)) {
-			return default_transformer.transform(from, to, context);
+			log("default", default_transformer, from, to, context);
+			Object returnValue = default_transformer.transform(from, to, context);
+			log.info("Converted to " + returnValue);
+			return returnValue;
 		}
 		return from;
+	}
+	
+	private void log(String listname, CanTransform t, Object from, Class<?> to, Context context) {
+		StringBuffer message = new StringBuffer("Using " + listname + "-");
+		if(t != null) message.append(t.getClass().getName()); else	message.append("null");
+		message.append(" to convert ");
+		if(from != null) message.append(from.getClass().getName()); else message.append("null");
+		message.append("(" + from + ") to ");
+		message.append(to);
+		message.append(" in context ");
+		message.append(context);
+		log.info(message);
 	}
 
 	public Transformer and_b(CanTransform transformer) {

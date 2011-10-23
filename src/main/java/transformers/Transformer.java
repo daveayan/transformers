@@ -15,6 +15,7 @@ import transformers.impl.StringToInteger;
 
 public class Transformer {
 	private static Log log = LogFactory.getLog(Transformer.class);
+	private AllowTransformation allowTransformation = null;
 	private List<CanTransform> transformers_a = new ArrayList<CanTransform>();
 	private List<CanTransform> transformers_b = new ArrayList<CanTransform>();
 	private List<CanTransform> built_in_transformers = new ArrayList<CanTransform>();
@@ -37,6 +38,7 @@ public class Transformer {
 	}
 
 	public Transformer clear() {
+		allowTransformation = null;
 		transformers_a = new ArrayList<CanTransform>();
 		transformers_b = new ArrayList<CanTransform>();
 		default_transformer = null;
@@ -55,6 +57,10 @@ public class Transformer {
 	}
 
 	public Object delegateTransformation(Object from, Class<?> to, Context context) {
+		if(allowTransformation != null) {
+			if(! allowTransformation.allowTransformation(from, to, context))
+				return null;
+		}
 		for (CanTransform t : transformers_a) {
 			if (t.canTransform(from, to, context)) {
 				log("a", t, from, to, context);
@@ -124,6 +130,11 @@ public class Transformer {
 
 	public Transformer with_default_transformer(CanTransform transformer) {
 		this.default_transformer = transformer;
+		return this;
+	}
+	
+	public Transformer allow_transformation_checker(AllowTransformation at) {
+		this.allowTransformation = at;
 		return this;
 	}
 

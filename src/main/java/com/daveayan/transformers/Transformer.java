@@ -1,4 +1,4 @@
-package transformers;
+package com.daveayan.transformers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +6,12 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import transformers.impl.BigDecimalToDouble;
-import transformers.impl.DoubleToBigDecimal;
-import transformers.impl.IntegerToString;
-import transformers.impl.PrimitiveIntToString;
-import transformers.impl.StringToByteArrayTransformer;
-import transformers.impl.StringToInteger;
+import com.daveayan.transformers.impl.BigDecimalToDouble;
+import com.daveayan.transformers.impl.DoubleToBigDecimal;
+import com.daveayan.transformers.impl.IntegerToString;
+import com.daveayan.transformers.impl.PrimitiveIntToString;
+import com.daveayan.transformers.impl.StringToByteArrayTransformer;
+import com.daveayan.transformers.impl.StringToInteger;
 
 public class Transformer {
 	private static Log log = LogFactory.getLog(Transformer.class);

@@ -1,4 +1,4 @@
-package transformers.transformer;
+package com.daveayan.transformers.transformer;
 
 import java.math.BigDecimal;
 
@@ -6,8 +6,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import transformers.Transformer;
-import transformers.impl.BigDecimalToDouble;
+import com.daveayan.transformers.Transformer;
+import com.daveayan.transformers.impl.BigDecimalToDouble;
 
 
 public class TransformTest {

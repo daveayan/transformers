@@ -1,7 +1,7 @@
-package transformers.impl;
+package com.daveayan.transformers.impl;
 
-import transformers.CanTransform;
-import transformers.Context;
+import com.daveayan.transformers.CanTransform;
+import com.daveayan.transformers.Context;
 
 public class StringToByteArrayTransformer implements CanTransform {
 	public boolean canTransform(Object from, Class<?> to, Context context) {

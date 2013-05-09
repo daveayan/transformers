@@ -1,4 +1,4 @@
-package transformers;
+package com.daveayan.transformers;
 
 public interface CanTransform {
 	public boolean canTransform(Object from, Class<?> to, Context context);

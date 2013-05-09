@@ -1,9 +1,8 @@
-package transformers.impl;
-
-import transformers.CanTransform;
-import transformers.Context;
+package com.daveayan.transformers.impl;
 
 import com.daveayan.mirage.ReflectionUtils;
+import com.daveayan.transformers.CanTransform;
+import com.daveayan.transformers.Context;
 
 public class IntegerToString implements CanTransform {
 	public String transform(Object from, Class<?> to, Context context) {

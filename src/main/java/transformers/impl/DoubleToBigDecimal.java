@@ -2,10 +2,10 @@ package transformers.impl;
 
 import java.math.BigDecimal;
 
-import mirage.ReflectionUtils;
-
 import transformers.CanTransform;
 import transformers.Context;
+
+import com.daveayan.mirage.ReflectionUtils;
 
 public class DoubleToBigDecimal implements CanTransform {
 	public BigDecimal transform(Object from, Class<?> to, Context context) {

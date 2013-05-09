@@ -59,7 +59,7 @@ public class Transformer {
 			if (t.canTransform(from, to, context)) {
 				log("a", t, from, to, context);
 				Object returnValue = t.transform(from, to, context);
-				log.info("Converted to " + returnValue);
+				log.info("Converted to " + as_string(returnValue));
 				return returnValue;
 			}
 		}
@@ -67,7 +67,7 @@ public class Transformer {
 			if (t.canTransform(from, to, context)) {
 				log("b", t, from, to, context);
 				Object returnValue = t.transform(from, to, context);
-				log.info("Converted to " + returnValue);
+				log.info("Converted to " + as_string(returnValue));
 				return returnValue;
 			}
 		}
@@ -75,17 +75,24 @@ public class Transformer {
 			if (t.canTransform(from, to, context)) {
 				log("built_in", t, from, to, context);
 				Object returnValue = t.transform(from, to, context);
-				log.info("Converted to " + returnValue);
+				log.info("Converted to " + as_string(returnValue));
 				return returnValue;
 			}
 		}
 		if (default_transformer != null && default_transformer.canTransform(from, to, context)) {
 			log("default", default_transformer, from, to, context);
 			Object returnValue = default_transformer.transform(from, to, context);
-			log.info("Converted to " + returnValue);
+			log.info("Converted to " + as_string(returnValue));
 			return returnValue;
 		}
 		return from;
+	}
+	
+	private String as_string(Object object) {
+		if(object == null) {
+			return null;
+		}
+		return object.toString();
 	}
 	
 	private void log(String listname, CanTransform t, Object from, Class<?> to, Context context) {

@@ -1,8 +1,9 @@
 package transformers.impl;
 
-import mirage.ReflectionUtils;
 import transformers.CanTransform;
 import transformers.Context;
+
+import com.daveayan.mirage.ReflectionUtils;
 
 public class PrimitiveIntToString implements CanTransform {
 	public String transform(Object from, Class<?> to, Context context) {

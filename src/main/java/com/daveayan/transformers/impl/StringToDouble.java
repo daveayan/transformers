@@ -9,6 +9,6 @@ public class StringToDouble implements CanTransform {
 		return Double.parseDouble(from.toString());
 	}
 	public boolean canTransform(Object from, Class<?> to, Context context) {
-		return from != null && to != null && ReflectionUtils.objectIsOfType(from, String.class) && ReflectionUtils.objectIsOfType(to, Double.class);
+		return from != null && to != null && ReflectionUtils.objectIsOfType(from, String.class) && ReflectionUtils.classIsOfEitherType(to, Double.class, double.class);
 	}
 }

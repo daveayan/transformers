@@ -9,6 +9,6 @@ public class StringToInteger implements CanTransform {
 		return Integer.parseInt(from.toString());
 	}
 	public boolean canTransform(Object from, Class<?> to, Context context) {
-		return from != null && to != null && ReflectionUtils.objectIsOfType(from, String.class) && ReflectionUtils.objectIsOfType(to, Integer.class);
+		return from != null && to != null && ReflectionUtils.objectIsOfType(from, String.class) && ReflectionUtils.classIsOfEitherType(to, Integer.class, int.class);
 	}
 }

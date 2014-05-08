@@ -10,7 +10,9 @@ import com.daveayan.transformers.impl.BigDecimalToDouble;
 import com.daveayan.transformers.impl.DoubleToBigDecimal;
 import com.daveayan.transformers.impl.IntegerToString;
 import com.daveayan.transformers.impl.PrimitiveIntToString;
+import com.daveayan.transformers.impl.StringMillisToDate;
 import com.daveayan.transformers.impl.StringToByteArrayTransformer;
+import com.daveayan.transformers.impl.StringToDouble;
 import com.daveayan.transformers.impl.StringToInteger;
 
 public class Transformer {

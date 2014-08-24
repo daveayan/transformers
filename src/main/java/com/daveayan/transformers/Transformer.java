@@ -27,7 +27,7 @@ public class Transformer {
 		transformer.setup_built_in_transformers();
 		return transformer;
 	}
-	
+
 	public Transformer setup_built_in_transformers() {
 		this.built_in_transformers.add(new StringToByteArrayTransformer());
 		this.built_in_transformers.add(new DoubleToBigDecimal());
@@ -49,64 +49,48 @@ public class Transformer {
 		if (context == null)
 			context = Context.newInstance();
 		context.put(this);
-		log.info("Transforming " + from + " to " + to);
+		log.debug("Transforming " + from + " to " + to);
 		Object returnObject = delegateTransformation(from, to, context);
 		context.removeTransformer();
-		log.info("Transformation Complete. Return Value = " + returnObject);
+		log.debug("Transformation Complete. Return Value = " + returnObject);
 		return returnObject;
 	}
 
 	public Object delegateTransformation(Object from, Class<?> to, Context context) {
 		for (CanTransform t : transformers_a) {
 			if (t.canTransform(from, to, context)) {
-				log("a", t, from, to, context);
 				Object returnValue = t.transform(from, to, context);
-				log.info("Converted to " + as_string(returnValue));
+				log.debug("Using " + t + " converted [" + from + "] to ["+ as_string(returnValue) + "]");
 				return returnValue;
 			}
 		}
 		for (CanTransform t : transformers_b) {
 			if (t.canTransform(from, to, context)) {
-				log("b", t, from, to, context);
 				Object returnValue = t.transform(from, to, context);
-				log.info("Converted to " + as_string(returnValue));
+				log.debug("Using " + t + " converted [" + from + "] to ["+ as_string(returnValue) + "]");
 				return returnValue;
 			}
 		}
 		for (CanTransform t : built_in_transformers) {
 			if (t.canTransform(from, to, context)) {
-				log("built_in", t, from, to, context);
 				Object returnValue = t.transform(from, to, context);
-				log.info("Converted to " + as_string(returnValue));
+				log.debug("Using " + t + " converted [" + from + "] to ["+ as_string(returnValue) + "]");
 				return returnValue;
 			}
 		}
 		if (default_transformer != null && default_transformer.canTransform(from, to, context)) {
-			log("default", default_transformer, from, to, context);
 			Object returnValue = default_transformer.transform(from, to, context);
-			log.info("Converted to " + as_string(returnValue));
+			log.debug("Using " + default_transformer + " converted [" + from + "] to ["+ as_string(returnValue) + "]");
 			return returnValue;
 		}
 		return from;
 	}
-	
+
 	private String as_string(Object object) {
 		if(object == null) {
 			return null;
 		}
 		return object.toString();
-	}
-	
-	private void log(String listname, CanTransform t, Object from, Class<?> to, Context context) {
-		StringBuffer message = new StringBuffer("Using " + listname + "-");
-		if(t != null) message.append(t.getClass().getName()); else	message.append("null");
-		message.append(" to convert ");
-		if(from != null) message.append(from.getClass().getName()); else message.append("null");
-		message.append("(" + from + ") to ");
-		message.append(to);
-		message.append(" in context ");
-		message.append(context);
-		log.info(message);
 	}
 
 	public Transformer and_b(CanTransform transformer) {

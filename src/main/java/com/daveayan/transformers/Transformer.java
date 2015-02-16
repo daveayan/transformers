@@ -45,41 +45,41 @@ public class Transformer {
 		return this;
 	}
 
-	public Object transform(Object from, Class<?> to, Context context) {
+	public Object transform(Object from, Class<?> to, String fieldName, Context context) {
 		if (context == null)
 			context = Context.newInstance();
 		context.put(this);
 		log.debug("Transforming " + from + " to " + to);
-		Object returnObject = delegateTransformation(from, to, context);
+		Object returnObject = delegateTransformation(from, to, fieldName, context);
 		context.removeTransformer();
 		log.debug("Transformation Complete. Return Value = " + returnObject);
 		return returnObject;
 	}
 
-	public Object delegateTransformation(Object from, Class<?> to, Context context) {
+	public Object delegateTransformation(Object from, Class<?> to, String fieldName, Context context) {
 		for (CanTransform t : transformers_a) {
-			if (t.canTransform(from, to, context)) {
-				Object returnValue = t.transform(from, to, context);
+			if (t.canTransform(from, to, fieldName, context)) {
+				Object returnValue = t.transform(from, to, fieldName, context);
 				log.debug("Using " + t + " converted [" + from + "] to ["+ as_string(returnValue) + "]");
 				return returnValue;
 			}
 		}
 		for (CanTransform t : transformers_b) {
-			if (t.canTransform(from, to, context)) {
-				Object returnValue = t.transform(from, to, context);
+			if (t.canTransform(from, to, fieldName, context)) {
+				Object returnValue = t.transform(from, to, fieldName, context);
 				log.debug("Using " + t + " converted [" + from + "] to ["+ as_string(returnValue) + "]");
 				return returnValue;
 			}
 		}
 		for (CanTransform t : built_in_transformers) {
-			if (t.canTransform(from, to, context)) {
-				Object returnValue = t.transform(from, to, context);
+			if (t.canTransform(from, to, fieldName, context)) {
+				Object returnValue = t.transform(from, to, fieldName, context);
 				log.debug("Using " + t + " converted [" + from + "] to ["+ as_string(returnValue) + "]");
 				return returnValue;
 			}
 		}
-		if (default_transformer != null && default_transformer.canTransform(from, to, context)) {
-			Object returnValue = default_transformer.transform(from, to, context);
+		if (default_transformer != null && default_transformer.canTransform(from, to, fieldName, context)) {
+			Object returnValue = default_transformer.transform(from, to, fieldName, context);
 			log.debug("Using " + default_transformer + " converted [" + from + "] to ["+ as_string(returnValue) + "]");
 			return returnValue;
 		}

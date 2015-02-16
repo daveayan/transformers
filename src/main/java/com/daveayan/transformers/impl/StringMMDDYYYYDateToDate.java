@@ -9,10 +9,10 @@ import com.daveayan.transformers.CanTransform;
 import com.daveayan.transformers.Context;
 
 public class StringMMDDYYYYDateToDate  implements CanTransform {
-	public Date transform(Object from, Class<?> to, Context context) {
+	public Date transform(Object from, Class<?> to, String fieldName, Context context) {
 		return toUtilDate(from.toString(), "MM/dd/yyyy");
 	}
-	public boolean canTransform(Object from, Class<?> to, Context context) {
+	public boolean canTransform(Object from, Class<?> to, String fieldName, Context context) {
 		if(from != null && to != null && ReflectionUtils.objectIsOfType(from, String.class) && ReflectionUtils.classIsOfEitherType(to, Date.class)) {
 			return (toUtilDate(from.toString(), "MM/dd/yyyy") != null);
 		}
